@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --color: #ffc600;
+    --spacing: 10px;
+    --blur: 0px
+}
+
+body {
+    background-color: #193549;
+    color: white;
+    font-family: sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+    font-size: 24px;
+    text-align: center;
+}
+
+img {
+    width: 50rem;
+    background-color: var(--color);
+    padding: var(--spacing);
+    filter: blur(var(--blur));
+}
+
+h1 {
+    margin-bottom: 2rem;
+}
+
+.hl {
+    color: var(--color);
+}
