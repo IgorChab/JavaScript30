@@ -15,7 +15,7 @@ let lastY = 0
 let hue = 0
 let direction = true
 
-const draw = (e) => {
+const draw = ({ offsetX, offsetY }) => {
     if (!isDrawing) {
         return
     }
@@ -24,11 +24,11 @@ const draw = (e) => {
 
     ctx.beginPath()
     ctx.moveTo(lastX, lastY)
-    ctx.lineTo(e.offsetX, e.offsetY)
+    ctx.lineTo(offsetX, offsetY)
     ctx.stroke()
 
-    lastX = e.offsetX
-    lastY = e.offsetY
+    lastX = offsetX
+    lastY = offsetY
 
     hue++
 
@@ -47,14 +47,36 @@ const draw = (e) => {
     }
 }
 
-document.addEventListener("mousedown", (e) => {
+const handleTouchMove = (e) => {
+    const touch = e.touches[0];
+    draw({ offsetX: touch.clientX, offsetY: touch.clientY })
+}
+
+const handleMouseMove = (e) => {
+    draw({ offsetX: e.offsetX, offsetY: e.offsetY })
+}
+
+const handleStart = ({ offsetX, offsetY }) => {
     isDrawing = true
 
-    lastX = e.offsetX
-    lastY = e.offsetY
+    lastX = offsetX
+    lastY = offsetY
 
-    draw(e)
+    draw({ offsetX, offsetY })
+}
+
+document.addEventListener("mousedown", (e) => {
+    handleStart({ offsetX: e.offsetX, offsetY: e.offsetY })
 })
-document.addEventListener("mousemove", draw)
+document.addEventListener("mousemove", handleMouseMove)
 document.addEventListener("mouseup", () => isDrawing = false)
 document.addEventListener("mouseleave", () => isDrawing = false)
+
+
+document.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+
+    handleStart({ offsetX: touch.clientX, offsetY: touch.clientY })
+})
+document.addEventListener("touchmove", handleTouchMove)
+document.addEventListener("touchend", () => isDrawing = false)
